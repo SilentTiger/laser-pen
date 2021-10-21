@@ -1,7 +1,7 @@
 {
   "name": "laser-pen",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "0.0.1",
+  "main": "dist/index.js",
   "author": "SilentTiger<cia.fbi.007@hotmail.com>",
   "license": "MIT",
   "scripts": {
@@ -15,6 +15,7 @@
     "@types/bezier-js": "^4.1.0",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
+    "bezier-js": "^4.1.1",
     "clean-webpack-plugin": "^4.0.0",
     "esbuild-loader": "^2.16.0",
     "eslint": "^7.32.0",
@@ -28,7 +29,7 @@
     "webpack-cli": "^4.9.0",
     "webpack-dev-server": "^4.3.1"
   },
-  "dependencies": {
-    "bezier-js": "^4.1.1"
-  }
+  "files": [
+    "dist"
+  ]
 }
