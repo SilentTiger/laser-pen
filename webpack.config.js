@@ -9,7 +9,7 @@ console.log(`run on ${os.cpus().length} CPUs`)
 const webpackConfig = {
   entry: {
     index: './src/index.ts',
-    demo: './example/index.ts'
+    demo: './example/index.ts',
   },
   output: {
     filename: '[name].bundle.js',
@@ -24,13 +24,16 @@ const webpackConfig = {
   cache: {
     type: 'filesystem',
   },
-  plugins: process.env.NODE_ENV === 'demo' ? [
-    new HtmlWebpackPlugin({
-      template: 'example/template.ejs',
-      buildTime: new Date().toLocaleString(),
-      env: process.env.NODE_ENV,
-    }),
-  ] : [],
+  plugins:
+    process.env.NODE_ENV !== 'production'
+      ? [
+          new HtmlWebpackPlugin({
+            template: 'example/template.ejs',
+            buildTime: new Date().toLocaleString(),
+            env: process.env.NODE_ENV,
+          }),
+        ]
+      : [],
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
@@ -43,7 +46,7 @@ const webpackConfig = {
           loader: 'ts',
           target: 'es6',
         },
-      }
+      },
     ],
   },
 }
