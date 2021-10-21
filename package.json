@@ -1,9 +1,21 @@
 {
   "name": "laser-pen",
   "version": "0.0.2",
+  "description": "a tool set to help you draw mouse track in web canvas",
+  "keywords": [
+    "mouse track",
+    "canvas",
+    "bezier",
+    "laser pen"
+  ],
   "main": "dist/index.js",
-  "author": "SilentTiger<cia.fbi.007@hotmail.com>",
+  "author": "SilentTiger <cia.fbi.007@hotmail.com> (https://github.com/SilentTiger)",
   "license": "MIT",
+  "homepage": "https://silenttiger.github.io/laser-pen/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SilentTiger/laser-pen.git"
+  },
   "scripts": {
     "start": "webpack serve",
     "build": "tsc --noEmit && rm -rf ./node_modules/.cache && NODE_ENV=production webpack",
