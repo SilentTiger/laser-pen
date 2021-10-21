@@ -1,0 +1,46 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true,
+    "jest": true
+  },
+  "extends": ["alloy", "alloy/typescript"],
+  "root": true,
+  "rules": {
+    "curly": "error",
+    "no-useless-escape": "error",
+    "no-useless-return": "error",
+    "func-names": "error",
+    "no-lonely-if": "error",
+    "no-multi-assign": "error",
+    "no-unneeded-ternary": "error",
+    "prefer-const": "error",
+    "prefer-rest-params": "error",
+    "prefer-spread": "error",
+    "prefer-template": "error",
+    "object-shorthand": "error",
+    "no-undef": "off",
+    "max-params": ["error", 9],
+    "max-depth": ["error", 9],
+    "complexity": ["error", 50],
+    "@typescript-eslint/prefer-for-of": "off",
+    "@typescript-eslint/consistent-type-definitions": "off",
+    "@typescript-eslint/consistent-type-imports": "error",
+    "@typescript-eslint/method-signature-style": "off",
+    "@typescript-eslint/no-this-alias": "off",
+    "@typescript-eslint/explicit-member-accessibility": [
+      "error",
+      {
+        "accessibility": "explicit",
+        "overrides": {
+          "accessors": "no-public",
+          "constructors": "no-public",
+          "methods": "explicit",
+          "properties": "explicit",
+          "parameterProperties": "explicit"
+        }
+      }
+    ]
+  }
+}
