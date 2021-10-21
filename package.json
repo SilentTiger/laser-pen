@@ -1,6 +1,6 @@
 {
   "name": "laser-pen",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "a tool set to help you draw mouse track in web canvas",
   "keywords": [
     "mouse track",
