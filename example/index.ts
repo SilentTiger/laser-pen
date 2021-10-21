@@ -1,5 +1,14 @@
-import type { IOriginalPointData } from "../src/index";
-import { setTension, setDelay, setMinWidth, setMaxWidth, setOpacity, setColor, drainPoints, drawLaserPen } from "../src/index";
+import type { IOriginalPointData } from '../src/index'
+import {
+  setTension,
+  setDelay,
+  setMinWidth,
+  setMaxWidth,
+  setOpacity,
+  setColor,
+  drainPoints,
+  drawLaserPen,
+} from '../src/index'
 
 let mouseTrack: IOriginalPointData[] = [
   // { x: 50 + 0, y: 50 + 50, time: 0 },
@@ -7,7 +16,6 @@ let mouseTrack: IOriginalPointData[] = [
   // { x: 50 + 100, y: 50 + 50, time: 0 },
   // { x: 50 + 150, y: 50 + 0, time: 0 },
   // { x: 50 + 200, y: 50 + 50, time: 0 },
-
   // { "x": 500, "y": 400, "time": Infinity },
   // { "x": 450, "y": 350, "time": Infinity },
   // { "x": 400, "y": 300, "time": Infinity },
@@ -36,7 +44,7 @@ const ratio = ((context: any) => {
     context.msBackingStorePixelRatio ||
     context.oBackingStorePixelRatio ||
     context.backingStorePixelRatio ||
-    1;
+    1
   return (window.devicePixelRatio || 1) / backingStore
 })(ctx)
 
@@ -48,12 +56,12 @@ function startDraw() {
 }
 function draw() {
   ctx.clearRect(0, 0, cvsDom.width, cvsDom.height)
-  mouseTrack = drainPoints(mouseTrack);
+  mouseTrack = drainPoints(mouseTrack)
   if (mouseTrack.length < 3) {
     drawing = false
     return
   }
-  drawing = true;
+  drawing = true
   drawLaserPen(ctx, mouseTrack)
   requestAnimationFrame(draw)
 }
@@ -66,25 +74,29 @@ function onRangeChange(event: Event) {
     switch (input.id) {
       case rangeDelayDom.id:
         setDelay(valueFloat * 1000)
-        break;
+        break
       case rangeMaxWidthDom.id:
         setMaxWidth(valueFloat)
-        break;
+        break
       case rangeMinWidthDom.id:
         setMinWidth(valueFloat)
-        break;
+        break
       case rangeTensionDom.id:
         setTension(valueFloat)
-        break;
+        break
       case rangeOpacityDom.id:
         setOpacity(valueFloat)
-        break;
+        break
       case rangeColorRedDom.id:
       case rangeColorGreenDom.id:
       case rangeColorBlueDom.id:
         showColor()
-        setColor(parseInt(rangeColorRedDom.value, 10), parseInt(rangeColorGreenDom.value, 10), parseInt(rangeColorBlueDom.value, 10))
-        break;
+        setColor(
+          parseInt(rangeColorRedDom.value, 10),
+          parseInt(rangeColorGreenDom.value, 10),
+          parseInt(rangeColorBlueDom.value, 10),
+        )
+        break
     }
   } catch (err) {
     console.error('set params error:', err)
@@ -97,7 +109,7 @@ function onMouseMove(event: MouseEvent) {
   mouseTrack.push({
     x: relativeX,
     y: relativeY,
-    time: Date.now()
+    time: Date.now(),
   })
   startDraw()
 }
@@ -123,7 +135,7 @@ function setCanvasSize() {
   ctx.scale(ratio, ratio)
 }
 
-(function initDom() {
+;(function initDom() {
   rangeDelayDom.addEventListener('input', onRangeChange)
   rangeMaxWidthDom.addEventListener('input', onRangeChange)
   rangeMinWidthDom.addEventListener('input', onRangeChange)
