@@ -67,6 +67,18 @@ function draw(ctx) {
 
 ## 原理
 
+### 如何通过离散坐标点拟合出平滑曲线？
+
+如果你用过 Photoshop 中的钢笔工具，答案其实就很简单，用贝塞尔曲线。Photoshop 中的钢笔工具其实就是一个贝塞尔曲线编辑器，通过起点、终点以及两个控制点，就可以在起点和终点间建立一条曲线。
+
+![photoshop pen](./docs/assets/pen.png)
+
+而如果一个中间点上的两个控制点满足一定的规律，就可以实现曲线的连续，也就是视觉效果上的平滑。感兴趣的话可以阅读「[用钢笔工具绘图](https://helpx.adobe.com/cn/photoshop/using/drawing-pen-tools.html)」中的内容。
+
+那么中间点上的两个控制点满足什么样的规律就可以实现曲线的连续呢？其实也很简单，就是中间点和两个控制点在同一直线上即可。
+
+### 如何实现线宽和透明度的渐变
+
 ## 性能
 
 ![flame chart](./docs/assets/performance_1.png)
