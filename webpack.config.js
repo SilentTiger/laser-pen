@@ -4,12 +4,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const { ESBuildMinifyPlugin } = require('esbuild-loader')
 
-const buildStart = new Date().toLocaleString()
 console.log(`run on ${os.cpus().length} CPUs`)
 
 const webpackConfig = {
   entry: {
-    index: './src/scripts/index.ts',
+    index: './src/index.ts',
     demo: './example/index.ts'
   },
   output: {
@@ -25,13 +24,13 @@ const webpackConfig = {
   cache: {
     type: 'filesystem',
   },
-  plugins: [
+  plugins: process.env.NODE_ENV === 'demo' ? [
     new HtmlWebpackPlugin({
       template: 'example/template.ejs',
-      buildTime: buildStart,
+      buildTime: new Date().toLocaleString(),
       env: process.env.NODE_ENV,
     }),
-  ],
+  ] : [],
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
@@ -49,8 +48,7 @@ const webpackConfig = {
   },
 }
 
-if (process.env.NODE_ENV === 'production') {
-  delete webpackConfig.entry.demo
+if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'demo') {
   webpackConfig.optimization = {
     minimize: true,
     minimizer: [
@@ -63,6 +61,10 @@ if (process.env.NODE_ENV === 'production') {
   webpackConfig.cache = false
   delete webpackConfig.devtool
   webpackConfig.plugins.unshift(new CleanWebpackPlugin())
+}
+
+if (process.env.NODE_ENV === 'production') {
+  delete webpackConfig.entry.demo
 } else {
   delete webpackConfig.entry.index
 }
