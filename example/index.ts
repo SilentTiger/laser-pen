@@ -6,6 +6,7 @@ import {
   setMaxWidth,
   setOpacity,
   setColor,
+  setRoundCap,
   drainPoints,
   drawLaserPen,
 } from '../src/index'
@@ -34,6 +35,7 @@ const rangeColorRedDom = document.querySelector('#rangeColorRed') as HTMLInputEl
 const rangeColorGreenDom = document.querySelector('#rangeColorGreen') as HTMLInputElement
 const rangeColorBlueDom = document.querySelector('#rangeColorBlue') as HTMLInputElement
 const colorBox = document.querySelector('#colorBox') as HTMLInputElement
+const chkRoundCap = document.querySelector('#chkRoundCap') as HTMLInputElement
 const canvasPos = cvsDom.getBoundingClientRect()
 
 const ratio = ((context: any) => {
@@ -103,6 +105,10 @@ function onRangeChange(event: Event) {
   }
 }
 
+function onRoundCapChange() {
+  setRoundCap(chkRoundCap.checked)
+}
+
 function onMouseMove(event: MouseEvent) {
   const relativeX = event.clientX - canvasPos.x
   const relativeY = event.clientY - canvasPos.y
@@ -145,6 +151,8 @@ function setCanvasSize() {
   rangeColorRedDom.addEventListener('input', onRangeChange)
   rangeColorGreenDom.addEventListener('input', onRangeChange)
   rangeColorBlueDom.addEventListener('input', onRangeChange)
+
+  chkRoundCap.addEventListener('change', onRoundCapChange)
 
   document.addEventListener('mousemove', onMouseMove)
   window.addEventListener('resize', setCanvasSize)

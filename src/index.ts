@@ -8,6 +8,7 @@ let opacity = 0
 let colorRed = 255
 let colorGreen = 0
 let colorBlue = 0
+let roundCap = false
 
 export const setDelay = (millisecond: number) => {
   delay = millisecond
@@ -33,6 +34,10 @@ export const setColor = (r: number, g: number, b: number) => {
   colorRed = r
   colorGreen = g
   colorBlue = b
+}
+
+export const setRoundCap = (r: boolean) => {
+  roundCap = r
 }
 
 export interface IPoint {
@@ -202,6 +207,17 @@ export const drawDrawingBezierData = (ctx: CanvasRenderingContext2D, data: IDraw
   ctx.restore()
 }
 
+export const drawRoundCap = (ctx: CanvasRenderingContext2D, lastData: IDrawingBezierData) => {
+  const centerPoint = lastData.bezier.points[3]
+  ctx.save()
+  ctx.beginPath()
+  ctx.fillStyle = `rgba(${colorRed},${colorGreen},${colorBlue},${lastData.opacity})`
+  ctx.arc(centerPoint.x, centerPoint.y, lastData.width / 2, 0, Math.PI * 2, false)
+  ctx.closePath()
+  ctx.fill()
+  ctx.restore()
+}
+
 export const drawLaserPen = (ctx: CanvasRenderingContext2D, points: IPoint[]) => {
   if (points.length < 3) {
     throw new Error('too less points')
@@ -224,6 +240,9 @@ export const drawLaserPen = (ctx: CanvasRenderingContext2D, points: IPoint[]) =>
   const splittedBezierArray = transformPointToBezier(splittedPoints, splittedControlPoints)
   const drawingData = calDrawingData(splittedBezierArray, totalLength)
   drawDrawingBezierData(ctx, drawingData)
+  if (roundCap) {
+    drawRoundCap(ctx, drawingData[drawingData.length - 1])
+  }
 }
 
 /**
