@@ -24,11 +24,27 @@ jobs:
         run: |
           yarn
           yarn build
+      - name: Publish
+        run: |
           git config --global user.name 'SilentTiger'
           git config --global user.email 'cia.fbi.007@hotmail.com'
-      - run: |
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
           yarn publish --patch
           git push
         env:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Get Version
+        id: version
+        uses: ashley-taylor/read-json-property-action@v1.0
+        with:
+          path: ./package.json
+          property: version
+      - name: Release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{steps.version.outputs.value}}
+          release_name: v${{steps.version.outputs.value}}
+          draft: false
+          prerelease: false
