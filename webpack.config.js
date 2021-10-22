@@ -2,7 +2,6 @@ const path = require('path')
 const os = require('os')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const { ESBuildMinifyPlugin } = require('esbuild-loader')
 
 console.log(`run on ${os.cpus().length} CPUs`)
 
@@ -41,25 +40,13 @@ const webpackConfig = {
     rules: [
       {
         test: /\.ts$/,
-        loader: 'esbuild-loader',
-        options: {
-          loader: 'ts',
-          target: 'es6',
-        },
+        loader: 'ts-loader',
       },
     ],
   },
 }
 
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'demo') {
-  webpackConfig.optimization = {
-    minimize: true,
-    minimizer: [
-      new ESBuildMinifyPlugin({
-        target: 'es6',
-      }),
-    ],
-  }
   webpackConfig.mode = 'production'
   webpackConfig.cache = false
   delete webpackConfig.devtool
