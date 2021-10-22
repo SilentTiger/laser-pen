@@ -28,8 +28,7 @@ jobs:
           git config --global user.email 'cia.fbi.007@hotmail.com'
       - run: |
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
-          npm version patch
-          npm publish
+          yarn publish --patch
           git push
         env:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
