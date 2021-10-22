@@ -19,8 +19,8 @@
   },
   "scripts": {
     "start": "webpack serve",
-    "build": "tsc --noEmit && rm -rf ./node_modules/.cache && NODE_ENV=production webpack",
-    "build:demo": "tsc --noEmit && rm -rf ./node_modules/.cache && NODE_ENV=demo webpack",
+    "build": "rm -rf ./node_modules/.cache && NODE_ENV=production webpack",
+    "build:demo": "rm -rf ./node_modules/.cache && NODE_ENV=demo webpack",
     "lint": "npx eslint ./src/**/*.ts ./example/*.ts",
     "lint:fix": "npx eslint ./src/**/*.ts  ./example/*.ts --fix"
   },
