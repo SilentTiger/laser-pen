@@ -26,8 +26,6 @@ jobs:
           yarn build
           git config --global user.name 'SilentTiger'
           git config --global user.email 'cia.fbi.007@hotmail.com'
-          yarn version --patch
-          git push
-      - run: npm publish
+          yarn publish --patch
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
