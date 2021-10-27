@@ -8,7 +8,7 @@
     "bezier",
     "laser pen"
   ],
-  "main": "dist/index.js",
+  "main": "dist/index.bundle.js",
   "types": "dist/index.d.ts",
   "author": "SilentTiger <cia.fbi.007@hotmail.com> (https://github.com/SilentTiger)",
   "license": "MIT",
