@@ -1,5 +1,7 @@
 [English](./README.MD)
 
+想进一步了解设计思路相关信息，可以阅读 [Instruction](docs/Instruction.zh-cn.md) 文档。
+
 # 简介
 
 Laser Pen 是一套用来在 web canvas 上绘制鼠标轨迹的工具集。
