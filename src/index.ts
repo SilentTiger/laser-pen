@@ -142,10 +142,10 @@ export const calControlPoints = (points: IPoint[]): IControlPoint[] => {
   }
   controlPoints[l - 1] = {
     cn: { x: points[l - 1].x, y: points[l - 1].y },
-    cp: { x: (points[l - 1].x + controlPoints[l - 2].cp.x) / 2, y: (points[l - 1].y + controlPoints[l - 2].cp.y) / 2 },
+    cp: { x: (points[l - 1].x + points[l - 2].x) / 2, y: (points[l - 1].y + points[l - 2].y) / 2 },
   }
   controlPoints[0] = {
-    cn: { x: (points[0].x + controlPoints[i + 1].cn.x) / 2, y: (points[0].y + controlPoints[i + 1].cn.y) / 2 },
+    cn: { x: (points[0].x + points[i + 1].x) / 2, y: (points[0].y + points[i + 1].y) / 2 },
     cp: { x: points[0].x, y: points[0].y },
   }
 
