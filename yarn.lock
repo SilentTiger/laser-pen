@@ -536,10 +536,10 @@ batch@0.6.1:
   resolved "https://registry.yarnpkg.com/batch/-/batch-0.6.1.tgz#dc34314f4e679318093fc760272525f94bf25c16"
   integrity sha1-3DQxT05nkxgJP8dgJyUl+UvyXBY=
 
-bezier-js@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/bezier-js/-/bezier-js-4.1.1.tgz#414df656833104e86765c0fa5e31439fb3e83a34"
-  integrity sha512-oVOS6SSFFFlfnZdzC+lsfvhs/RRcbxJ47U04M4s5QIBaJmr3YWmTIL3qmrOK9uW+nUUcl9Jccmo/xpTrG+bBoQ==
+bezier-js@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/bezier-js/-/bezier-js-5.1.0.tgz#49f5f3b2aba543a2be7987bd561b2a75c9b6a164"
+  integrity sha512-VHg016m6DarlJRAg6mcSUN/9czTLhenTyrlO6OqPH3TECq12R+XmBJQq9XQzKW6zGNF+VHV2vq4gTIWDXQXftA==
 
 big.js@^5.2.2:
   version "5.2.2"
