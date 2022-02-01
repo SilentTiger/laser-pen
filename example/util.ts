@@ -1,7 +1,7 @@
 import type { Bezier, PolyBezier } from 'bezier-js'
 import type { IControlPoint, IPoint } from '../src'
 
-function drawMouseTrack(ctx: CanvasRenderingContext2D, originalPoints: IPoint[]) {
+export function drawMouseTrack(ctx: CanvasRenderingContext2D, originalPoints: IPoint[]) {
   ctx.save()
   ctx.fillStyle = 'rgba(0,0,255,0.5)'
   for (let i = 0; i < originalPoints.length; i++) {
@@ -11,7 +11,7 @@ function drawMouseTrack(ctx: CanvasRenderingContext2D, originalPoints: IPoint[])
   ctx.restore()
 }
 
-function drawControlPoint(ctx: CanvasRenderingContext2D, points: IControlPoint[]) {
+export function drawControlPoint(ctx: CanvasRenderingContext2D, points: IControlPoint[]) {
   ctx.save()
   ctx.fillStyle = 'rgba(0,255,0,0.5)'
   ctx.strokeStyle = 'rgba(0,255,0,0.5)'
@@ -23,7 +23,11 @@ function drawControlPoint(ctx: CanvasRenderingContext2D, points: IControlPoint[]
   ctx.restore()
 }
 
-function drawBezierTrack(ctx: CanvasRenderingContext2D, originalPoints: IPoint[], controlPoints: IControlPoint[]) {
+export function drawBezierTrack(
+  ctx: CanvasRenderingContext2D,
+  originalPoints: IPoint[],
+  controlPoints: IControlPoint[],
+) {
   ctx.save()
   ctx.fillStyle = 'rgba(255,0,0,0.3)'
   ctx.strokeStyle = 'rgba(255,0,0,0.3)'
@@ -41,7 +45,7 @@ function drawBezierTrack(ctx: CanvasRenderingContext2D, originalPoints: IPoint[]
   ctx.restore()
 }
 
-function drawBezierArray(ctx: CanvasRenderingContext2D, bzArray: Bezier[], totalLength: number) {
+export function drawBezierArray(ctx: CanvasRenderingContext2D, bzArray: Bezier[], totalLength: number) {
   ctx.save()
   ctx.strokeStyle = 'rgba(255,0,0,0.3)'
   ctx.lineWidth = 3
@@ -56,7 +60,7 @@ function drawBezierArray(ctx: CanvasRenderingContext2D, bzArray: Bezier[], total
   ctx.restore()
 }
 
-function drawBezierOutline(ctx: CanvasRenderingContext2D, bzOutlines: PolyBezier[]) {
+export function drawBezierOutline(ctx: CanvasRenderingContext2D, bzOutlines: PolyBezier[]) {
   ctx.save()
   ctx.strokeStyle = 'rgba(255,0,0,0.6)'
   for (let index = 0; index < bzOutlines.length; index++) {
