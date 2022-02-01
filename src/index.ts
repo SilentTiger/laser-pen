@@ -199,8 +199,40 @@ export const drawDrawingBezierData = (ctx: CanvasRenderingContext2D, data: IDraw
     const { bezier: bz, width, opacity } = data[i]
     ctx.lineWidth = width
     ctx.strokeStyle = `rgba(${colorRed},${colorGreen},${colorBlue},${opacity})`
-    ctx.moveTo(bz.points[0].x, bz.points[0].y)
-    ctx.bezierCurveTo(bz.points[1].x, bz.points[1].y, bz.points[2].x, bz.points[2].y, bz.points[3].x, bz.points[3].y)
+
+    // offset the coordinates of start point and end point to make the line looks like a real line,
+    // not a serials lint with white gaps, relative to this issue: https://github.com/SilentTiger/laser-pen/issues/1
+    let newStartPointX = bz.points[0].x
+    let newStartPointY = bz.points[0].y
+    if (bz.points[0].x !== bz.points[1].x) {
+      const startPointX = bz.points[0].x
+      const startPointY = bz.points[0].y
+      const startPointK = (startPointY - bz.points[1].y) / (startPointX - bz.points[1].x)
+      const startPointB = startPointY - startPointK * startPointX
+      const xOffset = Math.sqrt(0.005 / (1 + startPointK * startPointK))
+      newStartPointX = (bz.points[1].x > startPointX ? -xOffset : xOffset) + startPointX
+      newStartPointY = startPointK * newStartPointX + startPointB
+    } else {
+      newStartPointY += bz.points[0].y > bz.points[1].y ? 0.005 : -0.005
+    }
+
+    let newEndPointX = bz.points[3].x
+    let newEndPointY = bz.points[3].y
+    if (bz.points[2].x !== bz.points[3].x) {
+      const endPointX = bz.points[3].x
+      const endPointY = bz.points[3].y
+      const endPointK = (endPointY - bz.points[2].y) / (endPointX - bz.points[2].x)
+      const endPointB = endPointY - endPointK * endPointX
+      const xOffset = Math.sqrt(0.005 / (1 + endPointK * endPointK))
+      newEndPointX = (bz.points[2].x > endPointX ? -xOffset : xOffset) + endPointX
+      newEndPointY = endPointK * newEndPointX + endPointB
+    } else {
+      newEndPointY += bz.points[2].y > bz.points[3].y ? -0.005 : 0.005
+    }
+
+    ctx.moveTo(newStartPointX, newStartPointY)
+    ctx.bezierCurveTo(bz.points[1].x, bz.points[1].y, bz.points[2].x, bz.points[2].y, newEndPointX, newEndPointY)
+
     ctx.stroke()
     ctx.closePath()
   }
