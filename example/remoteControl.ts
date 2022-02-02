@@ -121,6 +121,8 @@ class Server {
     if (this.mouseTrack.length >= 3) {
       drawLaserPen(this.ctx, this.mouseTrack)
     }
-    requestAnimationFrame(this.draw)
+    requestAnimationFrame(() => {
+      this.draw()
+    })
   }
 }
