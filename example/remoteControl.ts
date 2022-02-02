@@ -103,8 +103,8 @@ class Server {
       }
     } else {
       const currentTrackData: IOriginalPointData = {
-        x: this.cvsWidth / 2 - data[0],
-        y: this.cvsHeight / 2 - data[1],
+        x: this.cvsWidth / 4 - data[0],
+        y: this.cvsHeight / 4 - data[1],
         time: Date.now(),
       }
       this.mouseTrack.push(currentTrackData)
