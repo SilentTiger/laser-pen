@@ -10,6 +10,7 @@ import {
   drainPoints,
   drawLaserPen,
 } from '../src/index'
+import './remoteControl'
 
 let mouseTrack: IOriginalPointData[] = [
   // { x: 50 + 0, y: 50 + 50, time: 0 },

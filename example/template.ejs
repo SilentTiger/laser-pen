@@ -129,36 +129,6 @@
   </header>
   <canvas id="cvs" width="600" height="600"></canvas>
   <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
-  <script>
-    function randomString(e) {
-      e = e || 32;
-      var t = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678",
-        a = t.length,
-        n = "";
-      for (i = 0; i < e; i++) n += t.charAt(Math.floor(Math.random() * a));
-      return n
-    }
-    (() => {
-      if (location.href.indexOf('?id=') >= 0) {
-        var id = location.href.split('?id=')[1];
-        const peer = new Peer()
-        var conn = peer.connect(id);
-        // on open will be launch when you successfully connect to PeerServer
-        conn.on('open', function () {
-          conn.send('hi!');
-        });
-      } else {
-        const id = randomString()
-        history.replaceState(null, null, '?id=' + id)
-        var peer = new Peer(id);
-        peer.on('connection', function (conn) {
-          conn.on('data', function (data) {
-            alert(data);
-          });
-        });
-      }
-    })();
-  </script>
 </body>
 
 </html>
