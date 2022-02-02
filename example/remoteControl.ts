@@ -1,4 +1,5 @@
 import type { IOriginalPointData } from '../src'
+import { drawLaserPen, drainPoints } from '../src'
 
 declare class Peer {
   public on(eventName: string, callback: (...args: any[]) => void): void
@@ -85,10 +86,13 @@ class RemoteController {
 
 class Server {
   private cvsDom = document.querySelector('#cvs') as HTMLCanvasElement
-  private currentPos: [number, number] = [0, 0]
+  private ctx = this.cvsDom.getContext('2d') as CanvasRenderingContext2D
+  private cvsWidth = this.cvsDom.width
+  private cvsHeight = this.cvsDom.height
   private mouseTrack: IOriginalPointData[] = []
   constructor() {
     this.reset()
+    this.draw()
   }
   public processData(data: string | number[]) {
     if (typeof data === 'string') {
@@ -98,13 +102,25 @@ class Server {
         alert(data)
       }
     } else {
-      console.log(data)
+      const currentTrackData: IOriginalPointData = {
+        x: this.cvsWidth / 2 - data[0],
+        y: this.cvsHeight / 2 - data[1],
+        time: Date.now(),
+      }
+      this.mouseTrack.push(currentTrackData)
     }
   }
 
   private reset() {
-    this.currentPos[0] = this.cvsDom.width / 2
-    this.currentPos[1] = this.cvsDom.height / 2
     this.mouseTrack.length = 0
+  }
+
+  private draw() {
+    this.ctx.clearRect(0, 0, this.cvsWidth, this.cvsHeight)
+    this.mouseTrack = drainPoints(this.mouseTrack)
+    if (this.mouseTrack.length >= 3) {
+      drawLaserPen(this.ctx, this.mouseTrack)
+    }
+    requestAnimationFrame(this.draw)
   }
 }
