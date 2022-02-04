@@ -56,6 +56,8 @@ function startRemoteControl() {
   })
 }
 
+const maxAngleTan = Math.tan((25 * Math.PI) / 180)
+
 class RemoteController {
   private conn: PeerConnection
   private currentAngle: [number, number] = [0, 0]
@@ -70,8 +72,8 @@ class RemoteController {
         this.currentAngle[0] = alpha > 180 ? alpha - 360 : alpha
         this.currentAngle[1] = beta
         this.conn.send([
-          ((this.currentAngle[0] - this.resetAngle[0]) / 15) * 180,
-          ((this.currentAngle[1] - this.resetAngle[1]) / 15) * 180,
+          Math.tan(((this.currentAngle[0] - this.resetAngle[0]) * Math.PI) / 180) / maxAngleTan,
+          Math.tan(((this.currentAngle[1] - this.resetAngle[1]) * Math.PI) / 180) / maxAngleTan,
         ])
       },
       false,
@@ -103,8 +105,8 @@ class Server {
       }
     } else {
       const currentTrackData: IOriginalPointData = {
-        x: this.cvsWidth / 4 - data[0],
-        y: this.cvsHeight / 4 - data[1],
+        x: (this.cvsWidth / 4) * (1 - data[0]),
+        y: (this.cvsHeight / 4) * (1 - data[1]),
         time: Date.now(),
       }
       this.mouseTrack.push(currentTrackData)
