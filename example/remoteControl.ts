@@ -68,15 +68,18 @@ class RemoteController {
       typeof DeviceMotionEvent !== 'undefined' &&
       typeof (DeviceMotionEvent as any).requestPermission === 'function'
     ) {
-      document.getElementById('btnReset').innerText = 'request permission'
-      document.getElementById('btnReset').addEventListener('click', () => {
-        ;(DeviceMotionEvent as any).requestPermission().then((response) => {
-          if (response === 'granted') {
-            this.listenDeviceOrientation()
-            document.getElementById('btnReset').innerText = 'reset'
-          }
+      const btnReset = document.getElementById('btnReset')
+      if (btnReset) {
+        btnReset.innerText = 'request permission'
+        btnReset.addEventListener('click', () => {
+          ;(DeviceMotionEvent as any).requestPermission().then((response: string) => {
+            if (response === 'granted') {
+              this.listenDeviceOrientation()
+              btnReset.innerText = 'reset'
+            }
+          })
         })
-      })
+      }
     } else {
       this.listenDeviceOrientation()
     }
