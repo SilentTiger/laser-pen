@@ -53,6 +53,21 @@ function startRemoteControl() {
         })
       }
     })
+    conn.on('error', (err) => {
+      console.log('error', err)
+    })
+    conn.on('connection', () => {
+      console.log('connection')
+    })
+    conn.on('call', () => {
+      console.log('call')
+    })
+    conn.on('close', () => {
+      console.log('close')
+    })
+    conn.on('disconnected', () => {
+      console.log('disconnected')
+    })
   })
 }
 
