@@ -64,6 +64,31 @@ class RemoteController {
   private resetAngle: [number, number] = [0, 0]
   constructor(conn: PeerConnection) {
     this.conn = conn
+    if (
+      typeof DeviceMotionEvent !== 'undefined' &&
+      typeof (DeviceMotionEvent as any).requestPermission === 'function'
+    ) {
+      document.getElementById('btnReset').innerText = 'request permission'
+      document.getElementById('btnReset').addEventListener('click', () => {
+        ;(DeviceMotionEvent as any).requestPermission().then((response) => {
+          if (response === 'granted') {
+            this.listenDeviceOrientation()
+            document.getElementById('btnReset').innerText = 'reset'
+          }
+        })
+      })
+    } else {
+      this.listenDeviceOrientation()
+    }
+  }
+
+  public reset() {
+    this.conn.send('reset')
+    this.resetAngle[0] = this.currentAngle[0]
+    this.resetAngle[1] = this.currentAngle[1]
+  }
+
+  private listenDeviceOrientation() {
     window.addEventListener(
       'deviceorientation',
       (event) => {
@@ -78,11 +103,6 @@ class RemoteController {
       },
       false,
     )
-  }
-  public reset() {
-    this.conn.send('reset')
-    this.resetAngle[0] = this.currentAngle[0]
-    this.resetAngle[1] = this.currentAngle[1]
   }
 }
 
