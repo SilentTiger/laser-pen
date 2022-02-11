@@ -130,6 +130,7 @@ class Server {
   private cvsWidth = this.cvsDom.width
   private cvsHeight = this.cvsDom.height
   private mouseTrack: IOriginalPointData[] = []
+  private pixelRadio = getPixelRatio(this.ctx)
   constructor() {
     this.reset()
     this.draw()
@@ -143,8 +144,8 @@ class Server {
       }
     } else {
       const currentTrackData: IOriginalPointData = {
-        x: (this.cvsWidth / 4) * (1 - data[0]),
-        y: (this.cvsHeight / 4) * (1 - data[1]),
+        x: (this.cvsWidth / 2 / this.pixelRadio) * (1 - data[0]),
+        y: (this.cvsHeight / 2 / this.pixelRadio) * (1 - data[1] + 0.25),
         time: Date.now(),
       }
       this.mouseTrack.push(currentTrackData)
@@ -165,4 +166,17 @@ class Server {
       this.draw()
     })
   }
+}
+
+const getPixelRatio = (context: any): number => {
+  const backingStore =
+    context.backingStorePixelRatio ||
+    context.webkitBackingStorePixelRatio ||
+    context.mozBackingStorePixelRatio ||
+    context.msBackingStorePixelRatio ||
+    context.oBackingStorePixelRatio ||
+    context.backingStorePixelRatio ||
+    1
+
+  return (window.devicePixelRatio || 1) / backingStore
 }
