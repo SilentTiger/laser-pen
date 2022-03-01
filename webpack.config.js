@@ -8,7 +8,8 @@ console.log(`run on ${os.cpus().length} CPUs`)
 const webpackConfig = {
   entry: {
     index: './src/index.ts',
-    demo: './example/index.ts',
+    main: './example/main.ts',
+    client: './example/client.ts',
   },
   output: {
     filename: '[name].bundle.js',
@@ -27,7 +28,14 @@ const webpackConfig = {
     process.env.NODE_ENV !== 'production'
       ? [
           new HtmlWebpackPlugin({
-            template: 'example/template.ejs',
+            filename: 'main.html',
+            template: 'example/main.ejs',
+            buildTime: new Date().toLocaleString(),
+            env: process.env.NODE_ENV,
+          }),
+          new HtmlWebpackPlugin({
+            filename: 'client.html',
+            template: 'example/client.ejs',
             buildTime: new Date().toLocaleString(),
             env: process.env.NODE_ENV,
           }),
@@ -54,7 +62,8 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'demo') {
 }
 
 if (process.env.NODE_ENV === 'production') {
-  delete webpackConfig.entry.demo
+  delete webpackConfig.entry.main
+  delete webpackConfig.entry.client
 } else {
   delete webpackConfig.entry.index
 }

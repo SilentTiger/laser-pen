@@ -1,3 +1,5 @@
+import QRCode from 'qrcode'
+import ClipboardJS from 'clipboard'
 import type { IOriginalPointData } from '../src/index'
 import {
   setTension,
@@ -11,6 +13,7 @@ import {
   drawLaserPen,
 } from '../src/index'
 import './remoteControl'
+import { createSocket } from './ws'
 
 let mouseTrack: IOriginalPointData[] = [
   // { x: 50 + 0, y: 50 + 50, time: 0 },
@@ -38,6 +41,8 @@ const rangeColorBlueDom = document.querySelector('#rangeColorBlue') as HTMLInput
 const colorBox = document.querySelector('#colorBox') as HTMLInputElement
 const chkRoundCap = document.querySelector('#chkRoundCap') as HTMLInputElement
 const canvasPos = cvsDom.getBoundingClientRect()
+const imgQrCode = document.querySelector('#qr-code') as HTMLDivElement
+const btnCopyUrl = document.querySelector('#btnCopyUrl') as HTMLButtonElement
 
 const ratio = ((context: any) => {
   const backingStore =
@@ -142,7 +147,7 @@ function setCanvasSize() {
   ctx.scale(ratio, ratio)
 }
 
-;(function initDom() {
+;(function init() {
   rangeDelayDom.addEventListener('input', onRangeChange)
   rangeMaxWidthDom.addEventListener('input', onRangeChange)
   rangeMinWidthDom.addEventListener('input', onRangeChange)
@@ -166,4 +171,16 @@ function setCanvasSize() {
   showInputValue(rangeTensionDom)
   showInputValue(rangeOpacityDom)
   showColor()
+
+  createSocket('main').then(({ socket, id }) => {
+    const clientUrl = `${window.location.href.replace('main', 'client')}?id=${id}`
+    btnCopyUrl.style.display = 'inline-block'
+    btnCopyUrl.setAttribute('data-clipboard-text', clientUrl)
+    // eslint-disable-next-line no-new
+    new ClipboardJS('#btnCopyUrl')
+    QRCode.toDataURL(clientUrl, { margin: 0, errorCorrectionLevel: 'L' }).then((qrcodeDataUrl) => {
+      imgQrCode.style.display = 'block'
+      imgQrCode.style.backgroundImage = `url(${qrcodeDataUrl})`
+    })
+  })
 })()
