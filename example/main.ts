@@ -1,5 +1,7 @@
 import QRCode from 'qrcode'
 import ClipboardJS from 'clipboard'
+import SimplePeer from 'simple-peer'
+import type { Socket } from 'socket.io-client'
 import type { IOriginalPointData } from '../src/index'
 import {
   setTension,
@@ -14,6 +16,8 @@ import {
 } from '../src/index'
 import './remoteControl'
 import { createSocket } from './ws'
+
+type CustomSimplePeerInstance = SimplePeer.Instance & { remoteId: string }
 
 let mouseTrack: IOriginalPointData[] = [
   // { x: 50 + 0, y: 50 + 50, time: 0 },
@@ -171,8 +175,39 @@ function setCanvasSize() {
   showInputValue(rangeTensionDom)
   showInputValue(rangeOpacityDom)
   showColor()
+})()
+;(function initConnection() {
+  let ws: Socket | null = null
+  const pcs: Map<string, CustomSimplePeerInstance> = new Map()
+
+  const onSignal = ({ from, data }: { from: string; data: string }) => {
+    pcs.get(from)?.signal(data)
+  }
+
+  function onPeerMessage(e: any) {
+    console.log('onPeerMessage', e)
+  }
+
+  const onNeedConnect = (clientId: string) => {
+    const pc = new SimplePeer({ initiator: true }) as CustomSimplePeerInstance
+    pc.remoteId = clientId
+    pc.on('signal', (signalData) => {
+      console.log('signal', signalData)
+      ws?.emit('signal', { target: clientId, data: signalData })
+    })
+    pc.on('data', onPeerMessage)
+    pc.on('connect', () => {
+      console.log('connect')
+      pcs.set(clientId, pc)
+    })
+    pc.on('disconnect', () => {
+      pc.removeAllListeners()
+      pcs.delete(pc.remoteId)
+    })
+  }
 
   createSocket('main').then(({ socket, id }) => {
+    ws = socket
     const clientUrl = `${window.location.href.replace('main', 'client')}?id=${id}`
     btnCopyUrl.style.display = 'inline-block'
     btnCopyUrl.setAttribute('data-clipboard-text', clientUrl)
@@ -182,5 +217,7 @@ function setCanvasSize() {
       imgQrCode.style.display = 'block'
       imgQrCode.style.backgroundImage = `url(${qrcodeDataUrl})`
     })
+    ws.on('signal', onSignal)
+    ws.on('needConnect', onNeedConnect)
   })
 })()

@@ -30,12 +30,14 @@ const webpackConfig = {
           new HtmlWebpackPlugin({
             filename: 'main.html',
             template: 'example/main.ejs',
+            chunks: ['main'],
             buildTime: new Date().toLocaleString(),
             env: process.env.NODE_ENV,
           }),
           new HtmlWebpackPlugin({
             filename: 'client.html',
             template: 'example/client.ejs',
+            chunks: ['client'],
             buildTime: new Date().toLocaleString(),
             env: process.env.NODE_ENV,
           }),

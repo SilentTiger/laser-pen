@@ -1,6 +1,8 @@
 import SimplePeer from 'simple-peer'
 import { createSocket } from './ws'
 
+const statusDom = document.getElementById('status') as HTMLDivElement
+
 function getParameterByName(name: string, url: string = window.location.href) {
   const paramName = name.replace(/[[\]]/g, '\\$&')
   const regex = new RegExp(`[?&]${paramName}(=([^&#]*)|&|#|$)`)
@@ -14,26 +16,35 @@ function getParameterByName(name: string, url: string = window.location.href) {
   return decodeURIComponent(results[2].replace(/\+/g, ' '))
 }
 
-createSocket('client').then((res) => {
-  console.log('createSocket', res)
-  const ws = res.socket
-  const targetId = getParameterByName('id')
-  ws.emit('needConnect', targetId)
+function showStatus(status: string) {
+  statusDom.textContent = status
+}
 
-  const pc = new SimplePeer()
-  pc.on('signal', (signalData) => {
-    ws.emit('signal', { target: targetId, data: signalData })
-  })
-  pc.on('connect', () => {
-    console.log('connect')
-  })
-  pc.on('disconnect', () => {
-    console.log('disconnect')
-  })
+createSocket('client')
+  .then((res) => {
+    showStatus('Connecting to peer...')
+    const ws = res.socket
+    const targetId = getParameterByName('id')
+    ws.emit('needConnect', targetId)
 
-  ws.on('signal', (e) => {
-    const { from, data } = e
-    console.log('received signal from', from, data)
-    pc.signal(data)
+    const pc = new SimplePeer()
+    pc.on('signal', (signalData) => {
+      ws.emit('signal', { target: targetId, data: signalData })
+    })
+    pc.on('connect', () => {
+      console.log('connect')
+      showStatus('Connected.')
+    })
+    pc.on('disconnect', () => {
+      showStatus('Disconnected.')
+    })
+
+    ws.on('signal', (e) => {
+      const { from, data } = e
+      console.log('received signal from', from, data)
+      pc.signal(data)
+    })
   })
-})
+  .catch(() => {
+    showStatus('Connect to server error.')
+  })
