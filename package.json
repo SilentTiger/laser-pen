@@ -33,6 +33,7 @@
     "bezier-js": "^5.1.0",
     "clean-webpack-plugin": "^4.0.0",
     "clipboard": "^2.0.10",
+    "copy-webpack-plugin": "^10.2.4",
     "eslint": "^8.0.0",
     "eslint-config-alloy": "^4.3.0",
     "eslint-loader": "^4.0.2",

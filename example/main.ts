@@ -1,6 +1,5 @@
 import QRCode from 'qrcode'
 import ClipboardJS from 'clipboard'
-import SimplePeer from 'simple-peer'
 import type { Socket } from 'socket.io-client'
 import type { IOriginalPointData } from '../src/index'
 import {
@@ -16,8 +15,10 @@ import {
 } from '../src/index'
 import './remoteControl'
 import { createSocket } from './ws'
+import type { SimplePeerInstance } from './interface'
 
-type CustomSimplePeerInstance = SimplePeer.Instance & { remoteId: string }
+const remoteMouseTrackData: Map<string, { color: [number, number, number]; points: IOriginalPointData[] }> = new Map()
+const peerConnections: Map<string, SimplePeerInstance> = new Map()
 
 let mouseTrack: IOriginalPointData[] = [
   // { x: 50 + 0, y: 50 + 50, time: 0 },
@@ -178,31 +179,41 @@ function setCanvasSize() {
 })()
 ;(function initConnection() {
   let ws: Socket | null = null
-  const pcs: Map<string, CustomSimplePeerInstance> = new Map()
-
   const onSignal = ({ from, data }: { from: string; data: string }) => {
-    pcs.get(from)?.signal(data)
-  }
-
-  function onPeerMessage(e: any) {
-    console.log('onPeerMessage', e)
+    console.log('received signal', from, !!peerConnections.get(from))
+    peerConnections.get(from)?.signal(data)
   }
 
   const onNeedConnect = (clientId: string) => {
-    const pc = new SimplePeer({ initiator: true }) as CustomSimplePeerInstance
+    const pc = new (window as any).SimplePeer({ initiator: true }) as SimplePeerInstance
     pc.remoteId = clientId
-    pc.on('signal', (signalData) => {
+    peerConnections.set(clientId, pc)
+    pc.on('signal', (signalData: any) => {
       console.log('signal', signalData)
       ws?.emit('signal', { target: clientId, data: signalData })
     })
-    pc.on('data', onPeerMessage)
+    pc.on('data', (data: { type: 'color' | 'point'; color: [number, number, number]; point: IOriginalPointData }) => {
+      if (peerConnections.has(clientId) && remoteMouseTrackData.has(clientId)) {
+        const currentData = remoteMouseTrackData.get(clientId)
+        if (currentData) {
+          if (data.type === 'color') {
+            currentData.color = data.color
+          } else if (data.type === 'point') {
+            currentData.points.push(data.point)
+          }
+        }
+      } else {
+        pc.destroy()
+      }
+    })
     pc.on('connect', () => {
-      console.log('connect')
-      pcs.set(clientId, pc)
+      peerConnections.set(clientId, pc)
+      remoteMouseTrackData.set(clientId, { color: [255, 0, 0], points: [] })
     })
     pc.on('disconnect', () => {
       pc.removeAllListeners()
-      pcs.delete(pc.remoteId)
+      peerConnections.delete(pc.remoteId)
+      remoteMouseTrackData.delete(pc.remoteId)
     })
   }
 
