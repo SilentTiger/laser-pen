@@ -1,4 +1,5 @@
 import type { SimplePeerInstance } from './interface'
+import { RemoteController } from './RemoteController'
 import { createSocket } from './ws'
 
 const statusDom = document.getElementById('status') as HTMLDivElement
@@ -20,26 +21,25 @@ function showStatus(status: string) {
   statusDom.textContent = status
 }
 
-let pc: SimplePeerInstance | null = null
-
 createSocket('client')
   .then((res) => {
     showStatus('Connecting to peer...')
     const ws = res.socket
     const targetId = getParameterByName('id')
-    const newPc: SimplePeerInstance = new (window as any).SimplePeer()
-    newPc.on('signal', (signalData: any) => {
+    const peerConnection: SimplePeerInstance = new (window as any).SimplePeer()
+    peerConnection.on('signal', (signalData: any) => {
       ws.emit('signal', { target: targetId, data: signalData })
     })
-    newPc.on('connect', () => {
+    peerConnection.on('connect', () => {
       showStatus('Connected.')
-      pc = newPc
+      // eslint-disable-next-line no-new
+      new RemoteController(peerConnection)
     })
-    newPc.on('disconnect', () => {
+    peerConnection.on('disconnect', () => {
       showStatus('Disconnected.')
     })
     ws.on('signal', ({ data }) => {
-      newPc.signal(data)
+      peerConnection.signal(data)
     })
     ws.emit('needConnect', targetId)
   })
@@ -47,22 +47,3 @@ createSocket('client')
     console.log(err)
     showStatus('Connect to server error.')
   })
-;(() => {
-  document.querySelectorAll('input').forEach((input) => {
-    input.addEventListener('input', () => {
-      const color = readColor()
-      if (pc) {
-        pc.send(JSON.stringify({ type: 'color', color }))
-      }
-    })
-  })
-})()
-
-function readColor(): [number, number, number] {
-  const rangeColorRed = parseInt((document.getElementById('rangeColorRed') as HTMLInputElement).value, 10)
-  const rangeColorGreen = parseInt((document.getElementById('rangeColorGreen') as HTMLInputElement).value, 10)
-  const rangeColorBlue = parseInt((document.getElementById('rangeColorBlue') as HTMLInputElement).value, 10)
-  const color = `rgb(${rangeColorRed}, ${rangeColorGreen}, ${rangeColorBlue})`
-  ;(document.querySelector('#colorBox') as HTMLDivElement).style.backgroundColor = color
-  return [rangeColorRed, rangeColorGreen, rangeColorBlue]
-}
