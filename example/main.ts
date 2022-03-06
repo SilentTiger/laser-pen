@@ -49,6 +49,18 @@ const canvasPos = cvsDom.getBoundingClientRect()
 const imgQrCode = document.querySelector('#qr-code') as HTMLDivElement
 const btnCopyUrl = document.querySelector('#btnCopyUrl') as HTMLButtonElement
 
+const pixelRadio = ((): number => {
+  const backingStore =
+    (ctx as any).backingStorePixelRatio ||
+    (ctx as any).webkitBackingStorePixelRatio ||
+    (ctx as any).mozBackingStorePixelRatio ||
+    (ctx as any).msBackingStorePixelRatio ||
+    (ctx as any).oBackingStorePixelRatio ||
+    (ctx as any).backingStorePixelRatio ||
+    1
+  return (window.devicePixelRatio || 1) / backingStore
+})()
+
 const ratio = ((context: any) => {
   const backingStore =
     context.backingStorePixelRatio ||
@@ -64,19 +76,34 @@ const ratio = ((context: any) => {
 let drawing = false
 function startDraw() {
   if (!drawing) {
+    drawing = true
     draw()
   }
 }
+
 function draw() {
   ctx.clearRect(0, 0, cvsDom.width, cvsDom.height)
+  let needDrawInNextFrame = false
+  // draw local mouse track first
   mouseTrack = drainPoints(mouseTrack)
-  if (mouseTrack.length < 3) {
-    drawing = false
-    return
+  if (mouseTrack.length >= 3) {
+    drawLaserPen(ctx, mouseTrack)
+    needDrawInNextFrame = true
   }
-  drawing = true
-  drawLaserPen(ctx, mouseTrack)
-  requestAnimationFrame(draw)
+  // draw remote mouse track
+  remoteMouseTrackData.forEach((data, id) => {
+    const remoteMouseTrack = drainPoints(data.points)
+    if (remoteMouseTrack.length >= 3) {
+      setColor(...data.color)
+      drawLaserPen(ctx, remoteMouseTrack)
+      needDrawInNextFrame = true
+    }
+  })
+  if (needDrawInNextFrame) {
+    requestAnimationFrame(draw)
+  } else {
+    drawing = false
+  }
 }
 
 function onRangeChange(event: Event) {
@@ -192,14 +219,34 @@ function setCanvasSize() {
       console.log('signal', signalData)
       ws?.emit('signal', { target: clientId, data: signalData })
     })
-    pc.on('data', (data: { type: 'color' | 'point'; color: [number, number, number]; point: IOriginalPointData }) => {
+    pc.on('data', (data: Uint8Array) => {
       if (peerConnections.has(clientId) && remoteMouseTrackData.has(clientId)) {
         const currentData = remoteMouseTrackData.get(clientId)
         if (currentData) {
-          if (data.type === 'color') {
-            currentData.color = data.color
-          } else if (data.type === 'point') {
-            currentData.points.push(data.point)
+          let jsonData: {
+            type: 'color' | 'point' | 'reset'
+            color: [number, number, number]
+            point: [number, number]
+          } | null = null
+          try {
+            jsonData = JSON.parse(data.toString())
+          } catch (err) {
+            console.log('parse data error', err, data)
+          }
+          if (jsonData) {
+            if (jsonData.type === 'color') {
+              currentData.color = jsonData.color
+            } else if (jsonData.type === 'point') {
+              currentData.points.push({
+                x: (cvsDom.width / 2 / pixelRadio) * (1 - jsonData.point[0]),
+                y: (cvsDom.height / 2 / pixelRadio) * (1 - jsonData.point[1] + 0.25),
+                time: Date.now(),
+              })
+            } else if (jsonData.type === 'reset') {
+              console.log('reset')
+              currentData.points.length = 0
+            }
+            console.log('data', jsonData)
           }
         }
       } else {
@@ -207,6 +254,7 @@ function setCanvasSize() {
       }
     })
     pc.on('connect', () => {
+      console.log('connected', clientId)
       peerConnections.set(clientId, pc)
       remoteMouseTrackData.set(clientId, { color: [255, 0, 0], points: [] })
     })

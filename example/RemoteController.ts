@@ -41,10 +41,13 @@ export class RemoteController {
         this.currentAngle[0] = alpha > 180 ? alpha - 360 : alpha
         this.currentAngle[1] = beta
         this.conn.send(
-          JSON.stringify([
-            Math.tan(((this.currentAngle[0] - this.resetAngle[0]) * Math.PI) / 180) / maxAngleTan,
-            Math.tan(((this.currentAngle[1] - this.resetAngle[1]) * Math.PI) / 180) / maxAngleTan,
-          ]),
+          JSON.stringify({
+            type: 'point',
+            point: [
+              Math.tan(((this.currentAngle[0] - this.resetAngle[0]) * Math.PI) / 180) / maxAngleTan,
+              Math.tan(((this.currentAngle[1] - this.resetAngle[1]) * Math.PI) / 180) / maxAngleTan,
+            ],
+          }),
         )
       },
       false,
@@ -62,7 +65,7 @@ export class RemoteController {
 
   private listenReset() {
     document.getElementById('btnReset')?.addEventListener('click', () => {
-      this.conn.send('reset')
+      this.conn.send(JSON.stringify({ type: 'reset' }))
       this.resetAngle[0] = this.currentAngle[0]
       this.resetAngle[1] = this.currentAngle[1]
     })
