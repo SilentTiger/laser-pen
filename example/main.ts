@@ -211,7 +211,6 @@ function setCanvasSize() {
 ;(function initConnection() {
   let ws: Socket | null = null
   const onSignal = ({ from, data }: { from: string; data: string }) => {
-    console.log('received signal', from, !!peerConnections.get(from))
     peerConnections.get(from)?.signal(data)
   }
 
@@ -220,7 +219,6 @@ function setCanvasSize() {
     pc.remoteId = clientId
     peerConnections.set(clientId, pc)
     pc.on('signal', (signalData: any) => {
-      console.log('signal', signalData)
       ws?.emit('signal', { target: clientId, data: signalData })
     })
     pc.on('data', (data: Uint8Array) => {
@@ -240,17 +238,18 @@ function setCanvasSize() {
           if (jsonData) {
             if (jsonData.type === 'color') {
               currentData.color = jsonData.color
+              startDraw()
             } else if (jsonData.type === 'point') {
               currentData.points.push({
                 x: (cvsDom.width / 2 / pixelRadio) * (1 - jsonData.point[0]),
                 y: (cvsDom.height / 2 / pixelRadio) * (1 - jsonData.point[1] + 0.25),
                 time: Date.now(),
               })
+              startDraw()
             } else if (jsonData.type === 'reset') {
-              console.log('reset')
               currentData.points.length = 0
+              startDraw()
             }
-            console.log('data', jsonData)
           }
         }
       } else {
