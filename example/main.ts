@@ -91,14 +91,18 @@ function draw() {
     needDrawInNextFrame = true
   }
   // draw remote mouse track
-  remoteMouseTrackData.forEach((data, id) => {
-    const remoteMouseTrack = drainPoints(data.points)
-    if (remoteMouseTrack.length >= 3) {
-      setColor(...data.color)
-      drawLaserPen(ctx, remoteMouseTrack)
-      needDrawInNextFrame = true
-    }
-  })
+  try {
+    remoteMouseTrackData.forEach((data, id) => {
+      const remoteMouseTrack = drainPoints(data.points)
+      if (remoteMouseTrack.length >= 3) {
+        setColor(...data.color)
+        drawLaserPen(ctx, remoteMouseTrack)
+        needDrawInNextFrame = true
+      }
+    })
+  } catch (err) {
+    console.log('draw remote track error ', err)
+  }
   if (needDrawInNextFrame) {
     requestAnimationFrame(draw)
   } else {
@@ -267,7 +271,9 @@ function setCanvasSize() {
 
   createSocket('main').then(({ socket, id }) => {
     ws = socket
-    const clientUrl = `${window.location.href.replace('main', 'client')}?id=${id}`
+    const currentUrl = new URL(window.location.href)
+    const path = currentUrl.pathname.indexOf('/laser-pen') === 0 ? '/laser-pen' : ''
+    const clientUrl = `${new URL(window.location.href).origin}${path}/client.html?id=${id}`
     btnCopyUrl.style.display = 'inline-block'
     btnCopyUrl.setAttribute('data-clipboard-text', clientUrl)
     // eslint-disable-next-line no-new

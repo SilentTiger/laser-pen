@@ -30,7 +30,7 @@ const webpackConfig = {
     process.env.NODE_ENV !== 'production'
       ? [
           new HtmlWebpackPlugin({
-            filename: 'main.html',
+            filename: 'index.html',
             template: 'example/main.ejs',
             chunks: ['main'],
             buildTime: new Date().toLocaleString(),
