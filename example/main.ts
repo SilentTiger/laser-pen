@@ -87,6 +87,11 @@ function draw() {
   // draw local mouse track first
   mouseTrack = drainPoints(mouseTrack)
   if (mouseTrack.length >= 3) {
+    setColor(
+      parseInt(rangeColorRedDom.value, 10),
+      parseInt(rangeColorGreenDom.value, 10),
+      parseInt(rangeColorBlueDom.value, 10),
+    )
     drawLaserPen(ctx, mouseTrack)
     needDrawInNextFrame = true
   }
