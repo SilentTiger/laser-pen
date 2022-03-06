@@ -1,7 +1,7 @@
 import type { Socket } from 'socket.io-client'
 import { io } from 'socket.io-client'
 
-const SOCKET_HOST = 'laser-pen.azurewebsites.net'
+const SOCKET_HOST = 'laser-pen-lite.azurewebsites.net'
 
 export function createSocket(type: 'main' | 'client'): Promise<{ socket: Socket; id: string }> {
   return new Promise((resolve, reject) => {
