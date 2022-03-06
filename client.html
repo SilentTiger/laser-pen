@@ -1,0 +1,66 @@
+<!doctype html><html lang="en"><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"><meta content="ie=edge" http-equiv="x-ua-compatible"><meta content="width=device-width,initial-scale=1,user-scalable=no" name="viewport"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="white"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta build-time="构建于：3/6/2022, 8:37:18 AM"><title>Laser Pen Demo</title><style>html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      box-sizing: border-box;
+      overflow: overlay;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+    }
+
+    h1 {
+      font-size: 72px;
+      font-style: italic;
+      text-align: center;
+      margin: 0.5em 0;
+    }
+
+    #status {
+      text-align: center;
+      font-size: 18px;
+      padding: 1em 0;
+      background-color: azure;
+    }
+
+    #tool-box {
+      display: flex;
+      flex-direction: row;
+      padding: 10px;
+      justify-content: space-between;
+    }
+
+    #tool-box>div>div {
+      display: flex;
+      align-items: center;
+      margin-left: 10px;
+    }
+
+    #colorBox {
+      height: 100%;
+      width: 100px;
+      flex-grow: 1;
+      background-color: red;
+    }
+
+    #btnReset {
+      flex-grow: 1;
+      margin: 10px;
+      font-size: 32px;
+    }
+
+    #btnRequestPermission {
+      display: none;
+      position: absolute;
+      border-radius: 5px;
+      top: 5px;
+      left: 5px;
+      bottom: 5px;
+      right: 5px;
+      font-size: 32px;
+    }</style><script src="simplepeer.min.js"></script><script defer="defer" src="client.bundle.js"></script></head><body><h1>Laser Pen</h1><div id="status">Connecting to server...</div><div id="tool-box"><div id="colorBox"></div><div><div><label for="rangeColorRed">Red:</label> <input type="range" id="rangeColorRed" name="volume" min="0" max="255" step="1" value="255"></div><div><label for="rangeColorGreen">Green:</label> <input type="range" id="rangeColorGreen" name="volume" min="0" max="255" step="1" value="0"></div><div><label for="rangeColorBlue">Blue:</label> <input type="range" id="rangeColorBlue" name="volume" min="0" max="255" step="1" value="0"></div></div></div><button id="btnReset">Reset Pos</button> <button id="btnRequestPermission">Request Permission</button></body></html>

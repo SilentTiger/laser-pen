@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta content="ie=edge" http-equiv="x-ua-compatible"><meta build-time="构建于：2/11/2022, 7:44:17 AM"><link rel="shortcut icon" href="#"/><title>Laser Pen Demo</title><style>html,
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta content="ie=edge" http-equiv="x-ua-compatible"><meta build-time="构建于：3/6/2022, 8:37:18 AM"><link rel="shortcut icon" href="#"/><title>Laser Pen Demo</title><style>html,
     body {
       width: 100%;
       height: 100%;
@@ -27,6 +27,11 @@
     header>a {
       color: #000;
       text-decoration: none;
+    }
+
+    header>div {
+      display: flex;
+      align-items: center;
     }
 
     h1 {
@@ -67,4 +72,27 @@
       left: 0;
       width: 100%;
       font-size: 72px;
-    }</style><script defer="defer" src="demo.bundle.js"></script></head><body><header><a target="Laser Pen" href="https://github.com/SilentTiger/laser-pen"><h1>Laser Pen</h1></a><div id="tool-box"><div><div><label for="rangeDelay">Delay:</label> <input type="range" id="rangeDelay" name="volume" min="0.1" max="1" step="0.1" value="0.3"> <span id="rangeDelayValue"></span>s</div><div><label for="rangeMaxWidth">Max Width:</label> <input type="range" id="rangeMaxWidth" name="volume" min="3" max="30" step="1" value="10"> <span id="rangeMaxWidthValue"></span>px</div><div><label for="rangeMinWidth">Min Width:</label> <input type="range" id="rangeMinWidth" name="volume" min="0" max="5" step="1" value="0"> <span id="rangeMinWidthValue"></span>px</div><div><label for="rangeTension">Tension:</label> <input type="range" id="rangeTension" name="volume" min="0.1" max="0.5" step="0.01" value="0.3"> <span id="rangeTensionValue"></span></div><div><label for="rangeOpacity">Opacity:</label> <input type="range" id="rangeOpacity" name="volume" min="0" max="1" step="0.01" value="0"> <span id="rangeOpacityValue"></span></div></div><div><div id="colorBox"></div><div><label for="rangeColorRed">Red:</label> <input type="range" id="rangeColorRed" name="volume" min="0" max="255" step="1" value="255"> <span id="rangeColorRed"></span></div><div><label for="rangeColorGreen">Green:</label> <input type="range" id="rangeColorGreen" name="volume" min="0" max="255" step="1" value="0"> <span id="rangeColorGreen"></span></div><div><label for="rangeColorBlue">Blue:</label> <input type="range" id="rangeColorBlue" name="volume" min="0" max="255" step="1" value="0"> <span id="rangeColorBlue"></span></div><div><label for="rangeRoundCap">Round Cap:</label> <input type="checkbox" id="chkRoundCap"></div></div></div></header><canvas id="cvs" width="600" height="600"></canvas><button id="btnReset">Reset</button><script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script></body></html>
+    }
+
+    #connection-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #qr-code {
+      display: none;
+      width: 80px;
+      height: 80px;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+    #btnCopyUrl {
+      display: none;
+      margin-top: 5px;
+    }
+
+    #client-url {
+      display: none;
+    }</style><script src="simplepeer.min.js"></script><script defer="defer" src="main.bundle.js"></script></head><body><header><a target="Laser Pen" href="https://github.com/SilentTiger/laser-pen"><h1>Laser Pen</h1></a><div><div id="connection-panel"><div id="qr-code" title="Scan the qrcode using your phone to open the url of Remote Controller."></div><button id="btnCopyUrl" title="Copy the url of Remote Controller.">Copy URL</button></div><div id="tool-box"><div><div><label for="rangeDelay">Delay:</label> <input type="range" id="rangeDelay" name="volume" min="0.1" max="1" step="0.1" value="0.3"> <span id="rangeDelayValue"></span>s</div><div><label for="rangeMaxWidth">Max Width:</label> <input type="range" id="rangeMaxWidth" name="volume" min="3" max="30" step="1" value="10"> <span id="rangeMaxWidthValue"></span>px</div><div><label for="rangeMinWidth">Min Width:</label> <input type="range" id="rangeMinWidth" name="volume" min="0" max="5" step="1" value="0"> <span id="rangeMinWidthValue"></span>px</div><div><label for="rangeTension">Tension:</label> <input type="range" id="rangeTension" name="volume" min="0.1" max="0.5" step="0.01" value="0.3"> <span id="rangeTensionValue"></span></div><div><label for="rangeOpacity">Opacity:</label> <input type="range" id="rangeOpacity" name="volume" min="0" max="1" step="0.01" value="0"> <span id="rangeOpacityValue"></span></div></div><div><div id="colorBox"></div><div><label for="rangeColorRed">Red:</label> <input type="range" id="rangeColorRed" name="volume" min="0" max="255" step="1" value="255"> <span id="rangeColorRed"></span></div><div><label for="rangeColorGreen">Green:</label> <input type="range" id="rangeColorGreen" name="volume" min="0" max="255" step="1" value="0"> <span id="rangeColorGreen"></span></div><div><label for="rangeColorBlue">Blue:</label> <input type="range" id="rangeColorBlue" name="volume" min="0" max="255" step="1" value="0"> <span id="rangeColorBlue"></span></div><div><label for="rangeRoundCap">Round Cap:</label> <input type="checkbox" id="chkRoundCap"></div></div></div></div></header><canvas id="cvs" width="600" height="600"></canvas><button id="btnReset">Reset</button></body></html>
