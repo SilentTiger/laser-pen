@@ -1,3 +1,4 @@
+import KalmanFilter from 'kalmanjs'
 import type { SimplePeerInstance } from './interface'
 
 const maxAngleTan = Math.tan((25 * Math.PI) / 180)
@@ -33,11 +34,13 @@ export class RemoteController {
   }
 
   private listenDeviceOrientation() {
+    const filterAlpha = new KalmanFilter()
+    const filterBeta = new KalmanFilter()
     window.addEventListener(
       'deviceorientation',
       (event) => {
-        const alpha = event.alpha ?? 0
-        const beta = event.beta ?? 0
+        const alpha = filterAlpha.filter(event.alpha ?? 0)
+        const beta = filterBeta.filter(event.beta ?? 0)
         this.currentAngle[0] = alpha > 180 ? alpha - 360 : alpha
         this.currentAngle[1] = beta
         this.conn.send(

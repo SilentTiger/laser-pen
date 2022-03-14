@@ -19,5 +19,6 @@
     "noImplicitOverride": true,
     "skipLibCheck": true
   },
+  "include": ["src/**/*.ts", "example/declare.d.ts"],
   "files": ["src/index.ts"]
 }
