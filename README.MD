@@ -2,6 +2,8 @@
 
 For more instructions, please read [Instruction](docs/Instruction.md) .
 
+To get some information about remote control, please read [Remote Control](docs/RemoteControl.md) .
+
 # Description
 
 Laser Pen is a tool set used to draw mouse trails on the web canvas.
