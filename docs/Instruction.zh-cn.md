@@ -86,3 +86,5 @@
 能读到这里，想必你已经有所收获，如果你觉得 laser pen 帮你节省了至少半小时时间，就捐赠我一杯豆浆吧(是的，我不怎么喝咖啡)，不胜感激 😁
 
 ![alipay](./assets/alipay.jpg) ![wechat-pay](./assets/wechat-pay.jpg)
+
+[![visitor count](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FSilentTiger%2Flaser-pen%2Fblob%2Fmain%2Fdocs%2FInstruction.zh-cn.md&count_bg=%2379C83D&title_bg=%2379C83D&icon=&icon_color=%23E7E7E7&title=%F0%9F%A4%96&edge_flat=false)](https://hits.seeyoufarm.com)
