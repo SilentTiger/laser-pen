@@ -82,3 +82,7 @@
 ## 总结
 
 没事多洗洗碗。说不定就会有意外的收获 😂
+
+能读到这里，想必你已经有所收获，如果你觉得 laser pen 帮你节省了至少半小时时间，就捐赠我一杯豆浆吧(是的，我不怎么喝咖啡)，不胜感激 😁
+
+![alipay](./assets/alipay.jpg) ![wechat-pay](./assets/wechat-pay.jpg)
