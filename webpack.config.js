@@ -16,6 +16,7 @@ const webpackConfig = {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
     libraryTarget: 'umd',
+    globalObject: 'this',
   },
   devtool: 'source-map',
   devServer: {
