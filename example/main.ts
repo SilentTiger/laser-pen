@@ -70,7 +70,7 @@ const ratio = ((context: any) => {
     context.oBackingStorePixelRatio ||
     context.backingStorePixelRatio ||
     1
-  return (window.devicePixelRatio || 1) / backingStore
+  return Math.max(window.devicePixelRatio, 1) / backingStore
 })(ctx)
 
 let drawing = false
